@@ -3,19 +3,62 @@ import os
 import sys
 import shutil
 import configparser
+from Components.is_number_func import is_number
 
 class IniReader(object):
     
+    method_dict = {'hf2': 3, 'hf_2': 3,
+              'hf_1': 1, 'hf1': 1,
+              'geo_opt': 0,
+              'lmp2': 4,
+              'rpa': 5, 'lrpa': 5,
+              'localization': 2, 'loc': 2,
+              'cluster': 6,
+              'correction': 7}
+    
     def __init__(self, path=''):
         self.ini_path = path
-        self.ini_path = elf.set_defalut_ini_path()
+        self.ini_path = self.set_defalut_ini_path()
         self.cfg = configparser.ConfigParser()
         self.read_ini_file()
 
         self.project_path, self.start, self.end = self.read_ini_info()
-
-
+        self.project_name, self.system_type, self.group_type, self.lattice_parameter, self.number_atoms, self.geometry, self.fixed_atoms = self.read_basic_info()
+        self.molpro_key, self.molpro_path = self.read_molpro_info()
         
+        if self.start == '' or self.start == 'default':
+            self.start = 0
+        else:
+            self.start = self.start.lower()
+            self.start = self.method_dict[self.start]
+        if self.end == '' or self.end == 'default':
+            self.end = 8
+        else:
+            self.end = self.end.lower()
+            self.end = self.method_dict[self.end]
+        jobs = set(range(self.start, self.end))
+
+        if 0 in jobs:
+            self.geo_opt_bs, self.geo_opt_functional, self.geo_opt_nodes, self.crystal_path = self.read_geo_opt()
+        if 1 in jobs:
+            self.hf1_bs, self.hf1_nodes = self.read_hf1()
+        if 2 in jobs:
+            self.loc_nodes = self.read_loc()
+        if 3 in jobs:
+            self.hf2_bs, self.hf2_nodes = self.read_hf2()
+        if 4 in jobs:
+            self.lmp2_nodes, self.crystal_path = self.read_lmp2()
+        if 5 in jobs:
+            self.rpa_nodes_b, self.rpa_nodes_s = self.read_rpa()
+        if 6 in jobs:
+            self.coord = True
+            self.add_h = False
+            self.out_layer_number = True
+            self.central_atoms, self.factors, self.deleted_atoms = self.read_cluster()
+        if 7 in jobs:
+            self.correction_nodes, self.correction_memory, self.correction_bs = self.read_correction()
+
+
     def set_defalut_ini_path(self):
         if self.ini_path != '':
             return self.ini_path
@@ -33,6 +76,8 @@ class IniReader(object):
     def read_ini_info(self):
         try:
             path = self.cfg.get('Initilization', 'path')
+            if path == '':
+                path = os.getcwd()
             start = self.cfg.get('Initilization', 'start')
             end = self.cfg.get('Initilization', 'end')
         except configparser.NoOptionError:
@@ -40,5 +85,263 @@ class IniReader(object):
             sys.exit()
         return path, start, end
 
-    def read
+    def read_basic_info(self):
+        try:
+            project_name = self.cfg.get('Basic_Info', 'project_name')
+        except configparser.NoOptionError:
+            project_name = 'job'
+        try:
+            system_type = self.cfg.get('Basic_Info', 'system_type')
+        except configparser.NoOptionError:
+            system_type = 'SLAB'
+        try:
+            group_type = self.cfg.getint('Basic_Info', 'group_type')
+        except configparser.NoOptionError:
+            group_type = 1
+        try:
+            lattice_parameter = self.read_lattice_parameter()
+            geometry = self.read_geometry()
+            number_atoms = len(geometry)
+        except configparser.NoOptionError:
+            print(configparser.NoOptionError)
+            sys.exit()
+        try:
+            fixed_atoms = self.read_fixed_atoms()
+        except configparser.NoOptionError:
+            fixed_atoms = []
+        return project_name, system_type, group_type, lattice_parameter, number_atoms, geometry, fixed_atoms
 
+    def read_geometry(self):
+        basic_info_para = self.cfg.options('Basic_Info')
+        geoParas = [para for para in basic_info_para if para.startswith('geometry')]
+        geoLines = [self.cfg.get('Basic_Info', geoPara) for geoPara in geoParas]
+        geometry = [geoline.split() for geoline in geoLines]
+        return geometry
+
+    def read_lattice_parameter(self):
+        lp = self.cfg.get('Basic_Info', 'lattice_parameter')
+        lp = lp.split()
+        lp = [float(l) for l in lp]
+        length = []
+        angle = []
+        if len(lp) == 6:
+            length = lp[:3]
+            angle = lp[3:]
+        elif len(lp) == 3 and lp[-1] >25:
+            length = lp[:2]
+            angle = lp[2:]
+        else:
+            length = [l for l in lp if l <= 25]
+            angle = [l for l in lp if l > 25]
+        new_lp = []
+        new_lp.append(length)
+        new_lp.append(angle)
+        return new_lp
+
+    def read_fixed_atoms(self):
+        fixed_atoms = self.cfg.get('Basic_Info', 'fixed_atoms')
+        fixed_atoms = fixed_atoms.split()
+        return fixed_atoms
+
+    def if_default(self, value):
+        if value == '' or value == None:
+            return 'default'
+        else:
+            return value
+
+    def test_nodes(self, nodes):
+        if is_number(nodes):
+            return True
+        else:
+            if nodes == '':
+                return True
+            else:
+                print('Please enter the right nodes number!')
+                return False
+    
+    def read_geo_opt(self):
+        bs = self.cfg.get('Geo_Opt', 'basis_set')
+        bs = self.if_default(bs)
+        functional = self.cfg.get('Geo_Opt', 'functional')
+        functional = self.if_default(functional)
+        if functional == 'default':
+            functional = 'PBE0'
+        nodes = self.cfg.get('Geo_Opt', 'nodes')
+        self.test_nodes(nodes)
+        crystal_path = self.cfg.get('Geo_Opt', 'crystal_path')
+        return bs, functional, nodes, crystal_path
+
+    def read_hf1(self):
+        bs = self.cfg.get('HF1', 'basis_set')
+        bs = self.if_default(bs)
+        nodes = self.cfg.get('HF1', 'nodes')
+        self.test_nodes(nodes)
+        return bs, nodes
+
+    def read_hf2(self):
+        bs = self.cfg.get('HF2', 'basis_set')
+        bs = self.if_default(bs)
+        nodes = self.cfg.get('HF2', 'nodes')
+        self.test_nodes(nodes)
+        return bs, nodes
+
+    def read_loc(self):
+        nodes = self.cfg.get('Localization', 'nodes')
+        self.test_nodes(nodes)
+        return nodes
+
+    def read_lmp2(self):
+        nodes = self.cfg.get('LMP2', 'nodes')
+        self.test_nodes(nodes)
+        cryscor_path = self.cfg.get('LMP2', 'cryscor_path')
+        return nodes, cryscor_path
+
+    def read_rpa(self):
+        nodes_rpa_b = self.cfg.get('RPA', 'bilayer_nodes')
+        self.test_nodes(nodes_rpa_b)
+        nodes_rpa_s = self.cfg.get('RPA', 'singlelayer_nodes')
+        self.test_nodes(nodes_rpa_s)
+        return nodes_rpa_b, nodes_rpa_s
+
+    def read_cluster(self):
+        central_atoms = self.read_central_atoms_info()
+        factors = self.read_factors()
+        deleted_atoms = self.read_deleted_atoms()
+        self.coord = self.read_coord()
+        self.add_h = self.read_if_add_h()
+        self.out_layer_number = self.if_out_with_layer_number()
+        return central_atoms, factors, deleted_atoms
+
+    def read_central_atoms_info(self):
+        try:
+            upper_center_atoms = self.cfg.get('Cluster', 'upper_center_atoms')
+        except configparser.NoOptionError:
+            upper_center_atoms = []
+        try:
+            under_center_atoms = self.cfg.get('Cluster', 'under_center_atoms')
+        except configparser.NoOptionError:
+            under_center_atoms = []
+        upper_center_atoms = self.split_atoms(upper_center_atoms)
+        under_center_atoms = self.split_atoms(under_center_atoms)
+        central_atoms = self.process_center_atoms(
+            upper_center_atoms, under_center_atoms)
+        return central_atoms
+
+    def split_atoms(self, atoms):
+        if atoms == '' or atoms is None or atoms == []:
+            atoms = []
+        else:
+            atoms = atoms.split()
+        return atoms
+
+    def process_center_atoms(self, upper_atoms, under_atoms):
+        if upper_atoms != [] and under_atoms != []:
+            atoms = [upper_atoms, under_atoms]
+        elif upper_atoms == [] and under_atoms != 0:
+            atoms = under_atoms
+        elif upper_atoms != [] and under_atoms == []:
+            atoms = upper_atoms
+        else:
+            atoms = []
+        return atoms
+
+    def read_factors(self):
+        try:
+            factors_upper = self.cfg.get('Cluster', 'upper_factors')
+        except configparser.NoOptionError:
+            factors_upper = []
+        try:
+            factors_under = self.cfg.get('Cluster', 'under_factors')
+        except configparser.NoOptionError:
+            factors_under = []
+        factors_upper = self.split_factors(factors_upper)
+        factors_under = self.split_factors(factors_under)
+        if len(factors_upper) > 0 and len(factors_under) > 0:
+            factors = [factors_upper, factors_under]
+        elif len(factors_upper) > 0 and len(factors_under) == 0:
+            factors = [factors_upper, factors_upper]
+        elif len(factors_upper) == 0 and len(factors_under) > 0:
+            factors = [factors_under, factors_under]
+        else:
+            factors = []
+        return factors
+
+    def split_factors(self, factors):
+        if factors == '' or factors == []:
+            factors = []
+        else:
+            try:
+                factors = factors.split()
+                factors = [float(fac) for fac in factors]
+            except Exception as e:
+                print(e)
+        return factors
+
+    def read_coord(self):
+        try:
+            self.coord = self.cfg.get('Cluster', 'coord')
+            if self.coord.lower() == 'false':
+                self.coord = False
+            else:
+                self.coord = True
+        except configparser.NoOptionError:
+            self.coord = False
+        return self.coord
+
+    def read_deleted_atoms(self):
+        try:
+            deleted_atoms = self.cfg.get('Cluster', 'deleted_atoms')
+            deleted_atoms = self.split_atoms(deleted_atoms)
+        except configparser.NoOptionError:
+            deleted_atoms = []
+        return deleted_atoms
+
+    def read_if_add_h(self):
+        try:
+            self.add_h = self.cfg.get('Cluster', 'add_h')
+            if self.add_h.lower() == 'false' or self.add_h == '':
+                self.add_h = False
+            else:
+                self.add_h = True
+        except configparser.NoOptionError:
+            self.add_h = False
+        return self.add_h
+
+    def if_out_with_layer_number(self):
+        try:
+            self.out_layer_number = self.cfg.get('Cluster', 'output_with_layer_numer')
+            if self.out_layer_number.lower() == 'false' or self.out_layer_number == '':
+                self.out_layer_number = False
+            else:
+                self.out_layer_number = True
+        except configparser.NoOptionError:
+            self.out_layer_number = False
+        return self.out_layer_number
+
+    def read_molpro_info(self):
+        try:
+            molpro_key = self.cfg.get('Initilization', 'molpro_KEY')
+        except configparser.NoOptionError:
+            molpro_key = ''
+        try:
+            molpro_path = self.cfg.get('Initilization', 'molpro_path')
+        except configparser.NoOptionError:
+            molpro_path = ''
+        return molpro_key, molpro_path
+
+    def read_correction(self):
+
+        basis_set = self.cfg.get('Correction', 'basis_set')
+
+        options = self.cfg.options('Correction')
+        nodes = [node for node in options if node.endswith('nodes')]
+        nodes_dict = {}
+        for node in nodes:
+            nodes_dict[node.rsplit('_', 1)[0]] = self.cfg.get('Correction', node)
+
+        memory = [m for m in options if m.endswith('memory')]
+        memory_dict = {}
+        for m in memory:
+            memory_dict[m.rsplit('_', 1)[0]] = self.cfg.get('Correction', m)
+
+        return nodes_dict, memory_dict, basis_set

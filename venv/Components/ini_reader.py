@@ -111,6 +111,9 @@ class IniReader(object):
             fixed_atoms = []
         return project_name, system_type, group_type, lattice_parameter, number_atoms, geometry, fixed_atoms
 
+    def get_basic_info(self):
+        return self.project_name, self.system_type, self.group_type, self.lattice_parameter, self.number_atoms, self.geometry, self.fixed_atoms
+
     def read_geometry(self):
         basic_info_para = self.cfg.options('Basic_Info')
         geoParas = [para for para in basic_info_para if para.startswith('geometry')]
@@ -170,6 +173,9 @@ class IniReader(object):
         self.test_nodes(nodes)
         crystal_path = self.cfg.get('Geo_Opt', 'crystal_path')
         return bs, functional, nodes, crystal_path
+
+    def get_geo_opt(self):
+        return self.geo_opt_bs, self.geo_opt_functional, self.geo_opt_nodes, self.crystal_path
 
     def read_hf1(self):
         bs = self.cfg.get('HF1', 'basis_set')

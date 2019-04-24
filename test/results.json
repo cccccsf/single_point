@@ -127,5 +127,27 @@
         ],
         "energy": "-2.730117246710E+03",
         "unit": "hartree"
+    },
+    "hf1": {
+        "nodes": "12",
+        "basis_set": "default",
+        "energy": {
+            "bilayer": [
+                "-2.7260361085525E+03",
+                "hartree"
+            ],
+            "upperlayer": [
+                "-1.3630238629253E+03",
+                "hartree"
+            ],
+            "underlayer": [
+                "-1.3630238620338E+03",
+                "hartree"
+            ],
+            "layer_energy": [
+                "0.011616406599841866",
+                "hartree"
+            ]
+        }
     }
 }

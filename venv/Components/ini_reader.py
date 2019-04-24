@@ -25,6 +25,7 @@ class IniReader(object):
         self.project_path, self.start, self.end = self.read_ini_info()
         self.project_name, self.system_type, self.group_type, self.lattice_parameter, self.number_atoms, self.geometry, self.fixed_atoms = self.read_basic_info()
         self.molpro_key, self.molpro_path = self.read_molpro_info()
+        self.crystal_path = self.read_crystal_path()
         
         if self.start == '' or self.start == 'default':
             self.start = 0
@@ -39,7 +40,7 @@ class IniReader(object):
         jobs = set(range(self.start, self.end))
 
         if 0 in jobs:
-            self.geo_opt_bs, self.geo_opt_functional, self.geo_opt_nodes, self.crystal_path = self.read_geo_opt()
+            self.geo_opt_bs, self.geo_opt_functional, self.geo_opt_nodes = self.read_geo_opt()
         if 1 in jobs:
             self.hf1_bs, self.hf1_nodes = self.read_hf1()
         if 2 in jobs:
@@ -171,8 +172,19 @@ class IniReader(object):
             functional = 'PBE0'
         nodes = self.cfg.get('Geo_Opt', 'nodes')
         self.test_nodes(nodes)
-        crystal_path = self.cfg.get('Geo_Opt', 'crystal_path')
-        return bs, functional, nodes, crystal_path
+        return bs, functional, nodes
+
+    def read_crystal_path(self):
+        try:
+            crystal_path = self.cfg.get('Basic_Info', 'crystal_path')
+        except configparser.NoOptionError:
+            try:
+                crystal_path = self.cfg.get('Geo_Opt', 'crystal_path')
+            except configparser.NoOptionError:
+                print('CRYSTAL path not found.')
+                print('Please check input.ini file and try again.')
+                sys.exit()
+        return crystal_path
 
     def get_geo_opt(self):
         return self.geo_opt_bs, self.geo_opt_functional, self.geo_opt_nodes, self.crystal_path
@@ -183,6 +195,9 @@ class IniReader(object):
         nodes = self.cfg.get('HF1', 'nodes')
         self.test_nodes(nodes)
         return bs, nodes
+
+    def get_hf1(self):
+        return self.hf1_bs, self.hf1_nodes, self.crystal_path
 
     def read_hf2(self):
         bs = self.cfg.get('HF2', 'basis_set')

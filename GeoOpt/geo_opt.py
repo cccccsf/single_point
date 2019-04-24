@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 import os
-import sys
-from OsComponents import rename_file
 from OsComponents import record
-from OsComponents import mkdir
 from Components import IniReader
 from Components import Job
 from Components import record_data_json

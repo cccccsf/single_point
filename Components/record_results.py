@@ -3,6 +3,7 @@ import os
 import csv
 import json
 
+
 def creat_json_file(path):
     json_file = os.path.join(path, 'results.json')
     if not os.path.exists(json_file):
@@ -11,6 +12,7 @@ def creat_json_file(path):
             json.dump(info, f, indent=4)
     else:
         pass
+
 
 def record_data_json(path, item, value, section='basis'):
     json_file = os.path.join(path, 'results.json')
@@ -27,6 +29,7 @@ def record_data_json(path, item, value, section='basis'):
     with open(json_file, 'w') as f:
         json.dump(data, f, indent=4)
 
+
 def creat_csv_file(path):
     csv_file = os.path.join(path, 'results.csv')
     if not os.path.exists(csv_file):
@@ -34,6 +37,7 @@ def creat_csv_file(path):
         with open(csv_file, 'w', newline='') as f:
             f_csv = csv.writer(f)
             f_csv.writerow(headers)
+
 
 def record_data_csv(path, item, value, layer='bilayer'):
     csv_file = os.path.join(path, 'results.csv')

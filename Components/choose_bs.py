@@ -6,6 +6,7 @@ from Components.get_e_configuration import electron_config
 from BasisSet.basis_set_catalog import bs_dicts
 from Data import Periodict_Table
 
+
 def read_basis_set_file(element, bs_type):
     """
     Read a Gaussian94 formatted gaussian basis set file using a list of nuclei object
@@ -15,7 +16,7 @@ def read_basis_set_file(element, bs_type):
     """
 
     basis_array = []
-    #print(element)
+    # print(element)
     element = Periodict_Table.periodic_table_rev[int(element)]
 
     bs_path = os.path.dirname(os.path.realpath(__file__))

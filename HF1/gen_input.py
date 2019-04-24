@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 import os
-import re
 import sys
 from OsComponents import mkdir
-from Components import Job
 from Components import read_from_record
 from Crystal import Geometry
 from Crystal import choose_shrink

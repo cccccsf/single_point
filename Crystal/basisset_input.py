@@ -6,9 +6,10 @@ from BasisSet import basis_set_catalog
 from Components import test_variable
 from Components import choose_bs
 from Components import read_pob_tzvp_bs
-from Crystal import geometry_input
+
 
 yes_or_no = {'Y':1, 'y':1, 'Yes':1, 'yes':1, 'N':0, 'n':0, 'No':0, 'no':0 }
+
 
 class Basis_set(object):
 

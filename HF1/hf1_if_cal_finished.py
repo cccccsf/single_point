@@ -2,6 +2,7 @@
 import os
 import re
 
+
 def if_cal_finish(job):
     """
     check the calculation is finished or not through the output file
@@ -19,13 +20,12 @@ def if_cal_finish(job):
             lines = ' '.join(lines.split()) + '#'
             regex = 'TOTAL CPU TIME'
             line = re.search(regex, lines)
-            if line == None:
+            if line is None:
                 return False
             else:
                 if line.group(0) != 'TOTAL CPU TIME':
                     return False
                 else:
                     return True
-        return True
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         return False

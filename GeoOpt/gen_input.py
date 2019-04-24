@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import time
 import json
 from Data import Functionals
 from Data import Grimme_parameter

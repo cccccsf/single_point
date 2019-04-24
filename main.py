@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-import os
 import shutil
 from Components import IniReader
 from OsComponents import mkdir
@@ -28,7 +27,7 @@ def pipeline():
         
     anchor = start
     while anchor < end:
-        #print(anchor, end)
+        # print(anchor, end)
         if anchor == 0:
             GeoOpt.geo_opt(path)
         elif anchor == 1:

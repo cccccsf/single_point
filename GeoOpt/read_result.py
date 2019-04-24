@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os
 import re
+import csv
 from Components import record_data_json
 from Components import record_data_csv
 from OsComponents import record
@@ -45,6 +46,7 @@ def get_optimized_geometry(out_file):
 
     return lattice_parameter, geometry_split
 
+
 def get_optimized_energy(out_file):
     with open(out_file, 'r') as f:
         lines = f.read()
@@ -57,10 +59,11 @@ def get_optimized_energy(out_file):
     energy = energy_block[2:-1]
     return energy, unit
 
+
 def search_unit(energy_block):
     reg = '\(.*?\)'
     unit_block = re.search(reg, energy_block)
-    if unit_block != None:
+    if unit_block is not None:
         unit_block = unit_block.group(0)
         unit = unit_block[1:-1]
         if unit == 'AU':
@@ -69,12 +72,14 @@ def search_unit(energy_block):
         unit = 'default'
     return unit
 
+
 def creatxls_dis(path):
     csv_path = os.path.join(path, 'result.csv')
     headers = ['displacement', 'distance(A)', 'E(au)']
     with open(csv_path, 'w', newline='') as f:
         f_csv = csv.writer(f)
         f_csv.writerow(headers)
+
 
 def read_record_result(job, path):
     job_path = job.path

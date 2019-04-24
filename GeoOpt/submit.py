@@ -1,20 +1,15 @@
 #!/usr/bin/python3
 import os
-import re
 import subprocess
 import shutil
 import time
-import datetime
 import GeoOpt
 from OsComponents import record
 from OsComponents import rename_file
-from Components import Job
-
 
 
 def submit_geo_opt_job():
     chmod = 'chmod u+x geo_opt'
-    command = 'qsub geo_opt'
     try:
         subprocess.call(chmod, shell=True)
     except:
@@ -33,6 +28,7 @@ def submit_geo_opt_job():
     out_text = out_bytes.decode('utf-8')
     out_text = out_text.strip('\n')
     return out_text
+
 
 def update_nodes(path, nodes, crystal_path):
     scr = os.path.join(path, 'geo_opt')
@@ -67,6 +63,7 @@ def update_nodes(path, nodes, crystal_path):
     with open(scr, 'w') as f:
         f.writelines(lines)
 
+
 def copy_submit_scr(job, nodes, crystal_path):
     ziel_path = job.path
     scr_path = os.path.dirname(os.path.realpath(__file__))
@@ -92,23 +89,23 @@ def submit(job, nodes, crystal_path, path):
         record(path, rec)
         r = 0
         while True:
-           if GeoOpt.if_job_finish(job):
-               rec = 'calculation finished.\n'
-               rec += '---'*25
-               print(rec)
-               record(path, rec)
-               job.status = 'finished'
-               break
-           else:
-               time.sleep(500)
-               r += 1
-               if r > 15:
-                   rec = 'calculation still not finished.\n'
-                   rec += '---'*25
-                   print(rec)
-                   record(path, rec)
-                   r = 0
-               continue
+            if GeoOpt.if_job_finish(job):
+                rec = 'calculation finished.\n'
+                rec += '---'*25
+                print(rec)
+                record(path, rec)
+                job.status = 'finished'
+                break
+            else:
+                time.sleep(500)
+                r += 1
+                if r > 15:
+                    rec = 'calculation still not finished.\n'
+                    rec += '---'*25
+                    print(rec)
+                    record(path, rec)
+                    r = 0
+                continue
     else:
         job.status = 'finished'
 

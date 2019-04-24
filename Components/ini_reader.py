@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import os
 import sys
-import shutil
 import configparser
 from Components.is_number_func import is_number
+
 
 class IniReader(object):
     

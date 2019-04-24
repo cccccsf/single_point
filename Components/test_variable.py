@@ -2,6 +2,7 @@
 from BasisSet import basis_set_catalog
 from Data.Functionals import functionals
 
+
 def test_slab_or_molecule(slab_or_molecule):
     slab_or_molecule = slab_or_molecule.upper()
     if slab_or_molecule == 'SLAB' or 'MOLECULE':

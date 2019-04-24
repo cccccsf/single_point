@@ -1,22 +1,19 @@
 #!/usr/bin/python3
-from Crystal import Basis_set
-from Crystal import Geometry
+
 
 class Guesdual(object):
 
-
     def __init__(self, bs):
         self.title = 'GUESDUAL'
-        self.nfr = 0    #number of modification(nfr >= 1)in the atomic basis set given in input
-        self.ic = 0     #1:complete SCF calculation 0:stop before the first hamiltonian matrix diagonalization
-        self.nat = []   #formal atomic number of the atom whose basis set is modified
-        self.nsh = []   #sequence number of the reference shell inthe atomic basis set, starting from which shell(s) is(are) inserted/deleted
-        self.nu = []    #number of shells insertedt/deleted after the reference shell NSH
+        self.nfr = 0    # number of modification(nfr >= 1)in the atomic basis set given in input
+        self.ic = 0     # 1:complete SCF calculation 0:stop before the first hamiltonian matrix diagonalization
+        self.nat = []   # formal atomic number of the atom whose basis set is modified
+        self.nsh = []   # sequence number of the reference shell inthe atomic basis set, starting from which shell(s) is(are) inserted/deleted
+        self.nu = []    # number of shells insertedt/deleted after the reference shell NSH
         self.guesdual_info = []
         self.bs = bs
 
         self.value_init()
-
 
     def __len__(self):
         return len(self.nat)
@@ -32,7 +29,6 @@ class Guesdual(object):
                 string += str(unit) + ' '
             string += '\n'
         return string
-
 
     def get_guesdual_info(self):
         self.guesdual_info.append(self.title)
@@ -53,9 +49,6 @@ class Guesdual(object):
             shells.append(shell)
         self.guesdual_info.append(shells)
 
-
-    def getstring(self):
-        return self.string
 
     def get_nat(self):
         self.nat = self.bs.elements_unique

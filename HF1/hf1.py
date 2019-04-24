@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import sys
 from Components import IniReader
 from Components import read_from_record
 from Components import record_data_json

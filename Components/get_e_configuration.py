@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 def electron_config(atomic_num):
     orbitals = '1s 2s 2p 3s 3p 4s 3d 4p 5s 4d 5p 6s 4f 5d 6p 7s 5f 6d 7p 6f 7d 7f'.split()
     possible_electrons = dict(s=2,p=6,d=10,f=14)

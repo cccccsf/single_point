@@ -206,10 +206,16 @@ class IniReader(object):
         self.test_nodes(nodes)
         return bs, nodes
 
+    def get_hf2(self):
+        return self.hf2_bs, self.hf2_nodes, self.crystal_path
+
     def read_loc(self):
         nodes = self.cfg.get('Localization', 'nodes')
         self.test_nodes(nodes)
         return nodes
+
+    def get_loc(self):
+        return self.loc_nodes, self.crystal_path
 
     def read_lmp2(self):
         nodes = self.cfg.get('LMP2', 'nodes')

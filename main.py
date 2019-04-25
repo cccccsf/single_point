@@ -6,6 +6,8 @@ from OsComponents import record
 from OsComponents import rename_file
 import GeoOpt
 import HF1
+import Loc
+import HF2
 
 
 def pipeline():
@@ -32,10 +34,10 @@ def pipeline():
             GeoOpt.geo_opt(path)
         elif anchor == 1:
             HF1.hf1(path)
-    #     elif anchor == 2:
-    #         Localization.localization(path)
-    #     elif anchor == 3:
-    #         HF2.hf2(path)
+        elif anchor == 2:
+            Loc.localization(path)
+        elif anchor == 3:
+            HF2.hf2(path)
     #     elif anchor == 4:
     #         LMP2.lmp2(path)
     #     elif anchor == 5:

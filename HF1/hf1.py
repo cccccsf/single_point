@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 import os
 from Components import IniReader
-from Components import read_from_record
 from Components import record_data_json
 from Components import Job
 from OsComponents import record
-from Crystal import Geometry
 import HF1
 
 
@@ -19,12 +17,6 @@ def hf1(path):
     # read infos from input.ini file
     Ini = IniReader()
     project_name, system_type, group_type, lattice_parameter, number_atoms, geometry, fixed_atoms = Ini.get_basic_info()
-    geometry = read_from_record(path, 'optimized_geometry', 'geo_opt')
-    if isinstance(fixed_atoms, list) and len(fixed_atoms) == 2:
-        geometry = Geometry(geometry=geometry, fixed_atoms=fixed_atoms)
-    else:
-        geometry = Geometry(geometry=geometry)
-    lattice_parameter = read_from_record(path, 'optimized_lattice_parameter', 'geo_opt')
     bs, nodes, crystal_path = Ini.get_hf1()
     record_data_json(path, 'basis_set', bs, section='hf1')
     record_data_json(path, 'nodes', nodes, section='hf1')

@@ -7,7 +7,7 @@ from OsComponents import record
 
 
 def if_converged(energy_block):
-    regex = '- .*?E\('
+    regex = r'- .*?E\('
     try:
         status = re.search(regex, energy_block).group(0)
         status = status[2:-3]

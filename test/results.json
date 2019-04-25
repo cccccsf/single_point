@@ -149,5 +149,30 @@
                 "hartree"
             ]
         }
+    },
+    "loc": {
+        "nodes": "1"
+    },
+    "hf2": {
+        "basis_set": "default",
+        "nodes": "12",
+        "energy": {
+            "underlayer": [
+                "-1.363023862034E+03",
+                "hartree"
+            ],
+            "upperlayer": [
+                "-1.363023862925E+03",
+                "hartree"
+            ],
+            "bilayer": [
+                "-2.726036108553E+03",
+                "hartree"
+            ],
+            "layer_energy": [
+                "0.011616406000257484",
+                "hartree"
+            ]
+        }
     }
 }

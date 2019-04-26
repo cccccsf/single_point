@@ -50,7 +50,7 @@ class IniReader(object):
         if 4 in jobs:
             self.lmp2_nodes, self.cryscor_path = self.read_lmp2()
         if 5 in jobs:
-            self.rpa_nodes_b, self.rpa_nodes_s = self.read_rpa()
+            self.rpa_nodes_b, self.rpa_nodes_s, self.memory_b, self.memory_s = self.read_rpa()
         if 6 in jobs:
             self.coord = True
             self.add_h = False
@@ -228,7 +228,12 @@ class IniReader(object):
         self.test_nodes(nodes_rpa_b)
         nodes_rpa_s = self.cfg.get('RPA', 'singlelayer_nodes')
         self.test_nodes(nodes_rpa_s)
-        return nodes_rpa_b, nodes_rpa_s
+        memory_b = self.cfg.get('RPA', 'bilayer_memory')
+        memory_s = self.cfg.get('RPA', 'singlelayer_memory')
+        return nodes_rpa_b, nodes_rpa_s, memory_b, memory_s
+
+    def get_rpa(self):
+        return self.rpa_nodes_b, self.memory_b, self.rpa_nodes_s, self.memory_s, self.molpro_path, self.molpro_key
 
     def read_cluster(self):
         central_atoms = self.read_central_atoms_info()

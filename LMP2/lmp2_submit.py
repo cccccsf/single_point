@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import re
 import shutil
 import time
 from OsComponents import record
@@ -139,13 +138,13 @@ def submit(jobs):
                 count += 1
                 submitted_jobs.append(new_job)
                 rec = new_job.path + '\n'
-                rec += 'job submitted...'
+                rec += 'job submitted.'
                 rec += '\n' + out + '\n'
                 rec += '---'*25
                 record(new_job.root_path, rec)
                 print(rec)
             else:
-                time.sleep(200)
+                time.sleep(500)
                 j += 1
                 if j > 15:
                     rec = 'noting changes.'

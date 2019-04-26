@@ -215,5 +215,25 @@
                 "hartree"
             ]
         }
+    },
+    "rpa": {
+        "energy": {
+            "bilayer": [
+                "-0.950128912387",
+                "hartree"
+            ],
+            "upperlayer": [
+                "-0.466492157916",
+                "hartree"
+            ],
+            "underlayer": [
+                "-0.466747489168",
+                "hartree"
+            ],
+            "layer_energy": [
+                "-0.016889265303",
+                "hartree"
+            ]
+        }
     }
 }

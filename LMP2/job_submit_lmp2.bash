@@ -9,7 +9,7 @@ export MKL_NUM_THREADS=1
 
 cd ${PBS_O_WORKDIR}
 cryscor_path=~shch/project/
-currdir=/scratch/$USER/lmp2/x_0/z_0
+currdir=/scratch/$USER/lmp2/
 mkdir -p $currdir
 cp INPUT $currdir
 cp fort.9 $currdir

@@ -16,7 +16,7 @@ def get_energy_lmp2(job):
         final_summary = final_summary.group(0)
     else:
         print(path)
-        print('Energy infomation not found...')
+        print('Energy information not found...')
 
     regex = 'MP2 CORRELATION ENERGY.*?\n'
     lmp2 = re.search(regex, final_summary)

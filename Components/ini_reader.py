@@ -48,7 +48,7 @@ class IniReader(object):
         if 3 in jobs:
             self.hf2_bs, self.hf2_nodes = self.read_hf2()
         if 4 in jobs:
-            self.lmp2_nodes, self.crystal_path = self.read_lmp2()
+            self.lmp2_nodes, self.cryscor_path = self.read_lmp2()
         if 5 in jobs:
             self.rpa_nodes_b, self.rpa_nodes_s = self.read_rpa()
         if 6 in jobs:
@@ -58,7 +58,6 @@ class IniReader(object):
             self.central_atoms, self.factors, self.deleted_atoms = self.read_cluster()
         if 7 in jobs:
             self.correction_nodes, self.correction_memory, self.correction_bs = self.read_correction()
-
 
     def set_defalut_ini_path(self):
         if self.ini_path != '':
@@ -126,8 +125,6 @@ class IniReader(object):
         lp = self.cfg.get('Basic_Info', 'lattice_parameter')
         lp = lp.split()
         lp = [float(l) for l in lp]
-        length = []
-        angle = []
         if len(lp) == 6:
             length = lp[:3]
             angle = lp[3:]
@@ -222,6 +219,9 @@ class IniReader(object):
         self.test_nodes(nodes)
         cryscor_path = self.cfg.get('LMP2', 'cryscor_path')
         return nodes, cryscor_path
+
+    def get_lmp2(self):
+        return self.lmp2_nodes, self.cryscor_path
 
     def read_rpa(self):
         nodes_rpa_b = self.cfg.get('RPA', 'bilayer_nodes')

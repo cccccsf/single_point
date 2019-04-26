@@ -1,39 +1,18 @@
 ***************************************************************************
 Programm Rcord
 ***************************************************************************
-TIME: Apr 25 2019 17:06:05
+TIME: Apr 26 2019 15:06:47
 Project begins.
 ***************************************************************************
-TIME: Apr 25 2019 17:06:05
-Second Hartree Fock Calculation begins.
+TIME: Apr 26 2019 15:06:47
+LMP2 Calculation begins.
 ---------------------------------------------------------------------------
-TIME: Apr 25 2019 17:06:05
-C:\Users\ccccc\PycharmProjects\single_point\test\hf2\underlayer
-job submitted...
-*****.rigi
+TIME: Apr 26 2019 15:06:49
+lmp2Results readed.
 ---------------------------------------------------------------------------
-TIME: Apr 25 2019 17:06:06
-C:\Users\ccccc\PycharmProjects\single_point\test\hf2\upperlayer
-job submitted...
-*****.rigi
+TIME: Apr 26 2019 15:06:51
+scs_lmp2Results readed.
 ---------------------------------------------------------------------------
-TIME: Apr 25 2019 17:06:06
-C:\Users\ccccc\PycharmProjects\single_point\test\hf2
-job submitted...
-*****.rigi
----------------------------------------------------------------------------
-TIME: Apr 25 2019 17:07:46
-C:\Users\ccccc\PycharmProjects\single_point\test\hf2\underlayer
-calculation finished.---------------------------------------------------------------------------
-TIME: Apr 25 2019 17:07:46
-C:\Users\ccccc\PycharmProjects\single_point\test\hf2\upperlayer
-calculation finished.---------------------------------------------------------------------------
-TIME: Apr 25 2019 17:07:46
-C:\Users\ccccc\PycharmProjects\single_point\test\hf2
-calculation finished.---------------------------------------------------------------------------
-TIME: Apr 25 2019 17:07:46
-Results readed.
----------------------------------------------------------------------------
-TIME: Apr 25 2019 17:07:46
-HF2 finished!
+TIME: Apr 26 2019 15:06:51
+LMP2 finished!
 ***************************************************************************

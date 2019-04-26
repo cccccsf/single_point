@@ -8,6 +8,7 @@ import GeoOpt
 import HF1
 import Loc
 import HF2
+import LMP2
 
 
 def pipeline():
@@ -38,8 +39,8 @@ def pipeline():
             Loc.localization(path)
         elif anchor == 3:
             HF2.hf2(path)
-    #     elif anchor == 4:
-    #         LMP2.lmp2(path)
+        elif anchor == 4:
+            LMP2.lmp2(path)
     #     elif anchor == 5:
     #         RPA.rpa(path)
     #     elif anchor == 6:

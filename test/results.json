@@ -174,5 +174,46 @@
                 "hartree"
             ]
         }
+    },
+    "lmp2": {
+        "nodes": "1",
+        "energy": {
+            "bilayer": [
+                "-0.1300183234E+01",
+                "hartree"
+            ],
+            "upperlayer": [
+                "-0.6349172752E+00",
+                "hartree"
+            ],
+            "underlayer": [
+                "-0.6350138013E+00",
+                "hartree"
+            ],
+            "layer_energy": [
+                "-0.030252157499999988",
+                "hartree"
+            ]
+        }
+    },
+    "scs_lmp2": {
+        "energy": {
+            "bilayer": [
+                "-0.1230939768E+01",
+                "hartree"
+            ],
+            "upperlayer": [
+                "-0.6037602403E+00",
+                "hartree"
+            ],
+            "underlayer": [
+                "-0.6038401301E+00",
+                "hartree"
+            ],
+            "layer_energy": [
+                "-0.023339397600000034",
+                "hartree"
+            ]
+        }
     }
 }

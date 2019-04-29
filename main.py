@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import shutil
+from datetime import datetime
 from Components import IniReader
 from OsComponents import mkdir
 from OsComponents import record
@@ -10,6 +11,7 @@ import Loc
 import HF2
 import LMP2
 import RPA
+import Cluster
 
 
 def pipeline():
@@ -19,11 +21,15 @@ def pipeline():
     start = Ini.start
     end = Ini.end
 
-    mkdir(path)
+    now = datetime.now()
+    now = now.strftime("%b %d %Y %H:%M:%S")
     rec = 'Project begins.'
     rec += '\n' + '***'*25
     rename_file(path, 'record')
     record(path, rec, init=True)
+    print(now)
+    print(rec)
+    mkdir(path)
     try:
         shutil.copy(Ini.ini_path, path+'/input.ini')
     except Exception as e:
@@ -44,12 +50,20 @@ def pipeline():
             LMP2.lmp2(path)
         elif anchor == 5:
             RPA.rpa(path)
-    #     elif anchor == 6:
-    #         CLUSTER.cluster(path)
+        elif anchor == 6:
+            Cluster.cluster(path)
     #     elif anchor == 7:
     #         Correction.correction(path)
         anchor += 1
-    # end_programm(path)
+
+    now = datetime.now()
+    now = now.strftime("%b %d %Y %H:%M:%S")
+    rec = 'Project End.\n'
+    rec += '***'*25
+    rename_file(path, 'record')
+    record(path, rec, init=True)
+    print(now)
+    print(rec)
 
 
 if __name__ == "__main__":

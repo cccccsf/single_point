@@ -144,13 +144,15 @@ class IniReader(object):
         fixed_atoms = fixed_atoms.split()
         return fixed_atoms
 
-    def if_default(self, value):
-        if value == '' or value == None:
+    @staticmethod
+    def if_default(value):
+        if value == '' or value is None:
             return 'default'
         else:
             return value
 
-    def test_nodes(self, nodes):
+    @staticmethod
+    def test_nodes(nodes):
         if is_number(nodes):
             return True
         else:
@@ -244,6 +246,9 @@ class IniReader(object):
         self.out_layer_number = self.if_out_with_layer_number()
         return central_atoms, factors, deleted_atoms
 
+    def get_cluster(self):
+        return self.central_atoms, self.factors, self.deleted_atoms, self.coord, self.add_h, self.out_layer_number
+
     def read_central_atoms_info(self):
         try:
             upper_center_atoms = self.cfg.get('Cluster', 'upper_center_atoms')
@@ -259,14 +264,16 @@ class IniReader(object):
             upper_center_atoms, under_center_atoms)
         return central_atoms
 
-    def split_atoms(self, atoms):
+    @staticmethod
+    def split_atoms(atoms):
         if atoms == '' or atoms is None or atoms == []:
             atoms = []
         else:
             atoms = atoms.split()
         return atoms
 
-    def process_center_atoms(self, upper_atoms, under_atoms):
+    @staticmethod
+    def process_center_atoms(upper_atoms, under_atoms):
         if upper_atoms != [] and under_atoms != []:
             atoms = [upper_atoms, under_atoms]
         elif upper_atoms == [] and under_atoms != 0:
@@ -298,7 +305,8 @@ class IniReader(object):
             factors = []
         return factors
 
-    def split_factors(self, factors):
+    @staticmethod
+    def split_factors(factors):
         if factors == '' or factors == []:
             factors = []
         else:
@@ -312,6 +320,7 @@ class IniReader(object):
     def read_coord(self):
         try:
             self.coord = self.cfg.get('Cluster', 'coord')
+            assert isinstance(self.coord, str)
             if self.coord.lower() == 'false':
                 self.coord = False
             else:
@@ -331,6 +340,7 @@ class IniReader(object):
     def read_if_add_h(self):
         try:
             self.add_h = self.cfg.get('Cluster', 'add_h')
+            assert isinstance(self.add_h, str)
             if self.add_h.lower() == 'false' or self.add_h == '':
                 self.add_h = False
             else:
@@ -342,6 +352,7 @@ class IniReader(object):
     def if_out_with_layer_number(self):
         try:
             self.out_layer_number = self.cfg.get('Cluster', 'output_with_layer_numer')
+            assert isinstance(self.out_layer_number, str)
             if self.out_layer_number.lower() == 'false' or self.out_layer_number == '':
                 self.out_layer_number = False
             else:

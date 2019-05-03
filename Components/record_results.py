@@ -52,6 +52,8 @@ def record_data_csv(path, item, value, layer='bilayer'):
             new_line = [item, '', '', value]
         elif layer.lower() == 'whole layer':
             new_line = [item, value[0], value[1], value[2], value[3]]
+        elif layer.lower() == 'interlayer':
+            new_line = [item, '', '', '', value]
         with open(csv_file, 'a', newline='') as f:
             f_csv = csv.writer(f)
             f_csv.writerow(new_line)

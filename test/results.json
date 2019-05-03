@@ -1189,7 +1189,7 @@
                 "z": -3.6358893505153684,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1201,7 +1201,7 @@
                 "z": -1.5462363667695913,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1213,7 +1213,7 @@
                 "z": -3.6385645461143854,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1225,7 +1225,7 @@
                 "z": -2.2904805884798005,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1237,7 +1237,7 @@
                 "z": -2.281776737298981,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1249,7 +1249,7 @@
                 "z": -2.281776737298981,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1261,7 +1261,7 @@
                 "z": -3.6358893263016148,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1273,7 +1273,7 @@
                 "z": -1.5428876907344087,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1285,7 +1285,7 @@
                 "z": -3.6385645219006317,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             },
             {
@@ -1297,9 +1297,35 @@
                 "z": -2.2904805884798005,
                 "coordinate number": 1,
                 "coordinate vector": [],
-                "layer": 1,
+                "layer": 2,
                 "type": 1
             }
         ]
+    },
+    "correction": {
+        "memorys": {
+            "avdz_rpa_cc": "2000",
+            "avqz_rpa_cc": "8000",
+            "per_bas_rpa_iext1": "2000"
+        },
+        "nodes": {
+            "avdz_rpa_cc": "28",
+            "avqz_rpa_cc": "12",
+            "per_bas_rpa_iext1": "28"
+        },
+        "energy": {
+            "per_bas_rpa_iext1": [
+                -0.014635162346520276,
+                "hartree"
+            ],
+            "avdz_rpa_cc": [
+                -0.00232143772780528,
+                "hartree"
+            ],
+            "avqz_rpa_cc": [
+                -0.0037365421979201592,
+                "hartree"
+            ]
+        }
     }
 }

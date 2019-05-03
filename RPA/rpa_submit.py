@@ -59,7 +59,7 @@ def submit(jobs):
                 record(new_job.root_path, rec)
                 print(rec)
             else:
-                time.sleep(200)
+                time.sleep(500)
                 j += 1
                 if j > 35:
                     rec = 'noting changes.'

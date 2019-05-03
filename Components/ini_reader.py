@@ -14,7 +14,7 @@ class IniReader(object):
               'rpa': 5, 'lrpa': 5,
               'localization': 2, 'loc': 2,
               'cluster': 6,
-              'correction': 7}
+              'correction': 7, 'correct': 7}
     
     def __init__(self, path=''):
         self.ini_path = path
@@ -38,6 +38,7 @@ class IniReader(object):
             self.end = self.end.lower()
             self.end = self.method_dict[self.end]
         jobs = set(range(self.start, self.end))
+        jobs.add(3)
 
         if 0 in jobs:
             self.geo_opt_bs, self.geo_opt_functional, self.geo_opt_nodes = self.read_geo_opt()
@@ -57,7 +58,7 @@ class IniReader(object):
             self.out_layer_number = True
             self.central_atoms, self.factors, self.deleted_atoms = self.read_cluster()
         if 7 in jobs:
-            self.correction_nodes, self.correction_memory, self.correction_bs = self.read_correction()
+            self.correction_nodes, self.correction_memory, self.correction_bs, self.atoms = self.read_correction()
 
     def set_defalut_ini_path(self):
         if self.ini_path != '':
@@ -75,11 +76,11 @@ class IniReader(object):
 
     def read_ini_info(self):
         try:
-            path = self.cfg.get('Initilization', 'path')
+            path = self.cfg.get('Initialization', 'path')
             if path == '':
                 path = os.getcwd()
-            start = self.cfg.get('Initilization', 'start')
-            end = self.cfg.get('Initilization', 'end')
+            start = self.cfg.get('Initialization', 'start')
+            end = self.cfg.get('Initialization', 'end')
         except configparser.NoOptionError:
             print(configparser.NoOptionError)
             sys.exit()
@@ -363,18 +364,30 @@ class IniReader(object):
 
     def read_molpro_info(self):
         try:
-            molpro_key = self.cfg.get('Initilization', 'molpro_KEY')
+            molpro_key = self.cfg.get('Initialization', 'molpro_KEY')
         except configparser.NoOptionError:
             molpro_key = ''
         try:
-            molpro_path = self.cfg.get('Initilization', 'molpro_path')
+            molpro_path = self.cfg.get('Initialization', 'molpro_path')
         except configparser.NoOptionError:
             molpro_path = ''
         return molpro_key, molpro_path
 
     def read_correction(self):
 
-        basis_set = self.cfg.get('Correction', 'basis_set')
+        try:
+            basis_set = self.cfg.get('Correction', 'basis_set')
+        except configparser.NoOptionError:
+            # print(e)
+            basis_set = ''
+        try:
+            atom1 = self.cfg.get('Correction', 'atom1')
+            atom2 = self.cfg.get('Correction', 'atom2')
+            atom1 = atom1.split()
+            atom2 = atom2.split()
+        except configparser.NoOptionError as e:
+            print(e)
+            atom1, atom2 = [], []
 
         options = self.cfg.options('Correction')
         nodes = [node for node in options if node.endswith('nodes')]
@@ -387,4 +400,7 @@ class IniReader(object):
         for m in memory:
             memory_dict[m.rsplit('_', 1)[0]] = self.cfg.get('Correction', m)
 
-        return nodes_dict, memory_dict, basis_set
+        return nodes_dict, memory_dict, basis_set, [atom1, atom2]
+
+    def get_correction(self):
+        return self.correction_nodes, self.correction_memory, self.correction_bs, self.molpro_path, self.molpro_key, self.atoms

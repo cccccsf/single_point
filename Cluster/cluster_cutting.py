@@ -662,6 +662,7 @@ class ClusterCutter(object):
         self.choosed_atoms = self.delete_atoms(self.choosed_atoms)
         if add_h is True:
             self.choosed_atoms = self.add_H()
+        self.choosed_atoms = self.add_layer_number(self.choosed_atoms)
         self.record_cluster()
 
     def record_cluster(self):
@@ -724,7 +725,6 @@ class ClusterCutter(object):
             self.get_cluster()
         if len(cluster) == 0:
             cluster = self.choosed_atoms
-        cluster = self.add_layer_number(cluster)
         file_name = '{}_Cluster.xyz'.format(self.name)
         file_path = os.path.join(self.path, file_name)
         with open(file_path, 'w') as f:

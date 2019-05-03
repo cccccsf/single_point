@@ -12,6 +12,7 @@ import HF2
 import LMP2
 import RPA
 import Cluster
+import Correction
 
 
 def pipeline():
@@ -27,6 +28,7 @@ def pipeline():
     rec += '\n' + '***'*25
     rename_file(path, 'record')
     record(path, rec, init=True)
+    print('***'*25)
     print(now)
     print(rec)
     mkdir(path)
@@ -52,8 +54,8 @@ def pipeline():
             RPA.rpa(path)
         elif anchor == 6:
             Cluster.cluster(path)
-    #     elif anchor == 7:
-    #         Correction.correction(path)
+        elif anchor == 7:
+            Correction.correction(path)
         anchor += 1
 
     now = datetime.now()

@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 import os
 
+
 class Job(object):
 
-    def __init__(self, path, init_dist = 0):
+    def __init__(self, path, init_dist=0):
         self.path = path
         self.z = '0'
         self.x = '0'
@@ -20,6 +21,7 @@ class Job(object):
 
         self.parameter = {}
         self.status = ''
+        self.input = ''
 
     def __str__(self):
         string = self.path + '\n'
@@ -28,9 +30,8 @@ class Job(object):
 
     def __repr__(self):
         string = self.path + '\n'
-        string += 'Lethod: {},     Layertype: {}\n'.format(self.method, self.layertype)
+        string += 'Method: {},     Layertype: {}\n'.format(self.method, self.layertype)
         return string
-
 
     def __setattr__(self, key, value):
         self.__dict__[key] = value
@@ -59,14 +60,13 @@ class Job(object):
     def init_values(self):
         method = os.path.split(self.path)[-1]
         path = os.path.split(self.path)[0]
-        if method == 'underlayer' or method =='upperlayer':
+        if method == 'underlayer' or method == 'upperlayer':
             self.layertype = method
             method = os.path.split(path)[-1]
-            path  = os.path.split(path)[0]
+            path = os.path.split(path)[0]
         self.method_name = self.method_name_transfer(method)
         self.method = method
         self.root_path = path
-
 
     @staticmethod
     def method_name_transfer(method):
@@ -82,18 +82,18 @@ class Job(object):
     def get_z_value(self):
         try:
             z = float(self.z)
+            return z
         except Exception as e:
             print(e)
-        finally:
-            return z
+            return 0
 
     def get_x_value(self):
         try:
             x = float(self.x)
+            return x
         except Exception as e:
             print(e)
-        finally:
-            return x
+            return 0
 
     def get_absolut_distance(self):
         if self.init_dist == 0:

@@ -22,6 +22,7 @@ class Job(object):
         self.parameter = {}
         self.status = ''
         self.input = ''
+        self.bs = ''
 
     def __str__(self):
         string = self.path + '\n'

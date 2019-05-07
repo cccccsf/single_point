@@ -7,6 +7,7 @@ def unit_transform(energy, unit_from, unit_to):
             'ha': 1,
             'hartree': 1,
             'ev': 27.2113839,
+            'mev': 27211.3839,
             'cm': 219474.63067,
             'kcal/mol': 627.5096,
             'kj/mol': 2625.50,

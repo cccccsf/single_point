@@ -26,6 +26,7 @@ class IniReader(object):
         self.project_name, self.system_type, self.group_type, self.lattice_parameter, self.number_atoms, self.geometry, self.fixed_atoms = self.read_basic_info()
         self.molpro_key, self.molpro_path = self.read_molpro_info()
         self.crystal_path = self.read_crystal_path()
+        self.unit = self.get_unit()
         
         if self.start == '' or self.start == 'default':
             self.start = 0
@@ -404,3 +405,10 @@ class IniReader(object):
 
     def get_correction(self):
         return self.correction_nodes, self.correction_memory, self.correction_bs, self.molpro_path, self.molpro_key, self.atoms
+
+    def get_unit(self):
+        try:
+            unit = self.cfg.get('Initialization', 'unit')
+        except configparser.NoOptionError:
+            unit = 'hartree'
+        return unit

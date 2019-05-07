@@ -13,6 +13,7 @@ import LMP2
 import RPA
 import Cluster
 import Correction
+import Results
 
 
 def pipeline():
@@ -56,6 +57,8 @@ def pipeline():
             Cluster.cluster(path)
         elif anchor == 7:
             Correction.correction(path)
+        elif anchor == 8:
+            Results.results(path)
         anchor += 1
 
     now = datetime.now()
